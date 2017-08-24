@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/DiscountService.iml" filepath="$PROJECT_DIR$/.idea/modules/DiscountService.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/DiscountService_main.iml" filepath="$PROJECT_DIR$/.idea/modules/DiscountService_main.iml" group="DiscountService" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/DiscountService_test.iml" filepath="$PROJECT_DIR$/.idea/modules/DiscountService_test.iml" group="DiscountService" />
+    </modules>
+  </component>
+</project>
