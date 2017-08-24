@@ -8,6 +8,4 @@ public interface DiscountInterface {
     int getDiscountItemLimit();
     LocalDate getDiscountDate();
     Item getItem();
-
-    boolean isValidDiscount();
 }

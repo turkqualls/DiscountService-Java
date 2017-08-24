@@ -59,7 +59,7 @@ public class Cart {
 
         if(discount.getDiscountDate() != null)
             return discount.getDiscountDate().equals(LocalDate.now());
-        
+
         if(discount.getItem() != null)
             return Collections.frequency(this.itemList, discount.getItem()) >= discount.getDiscountItemLimit();
 

@@ -67,10 +67,7 @@ public class AllCartDiscount implements DiscountInterface {
     }
 
     @Override
-    public int getDiscountItemLimit() { return this.itemLimit; }
-
-    @Override
-    public boolean isValidDiscount() {
-        return false;
+    public int getDiscountItemLimit() {
+        return this.itemLimit;
     }
 }
