@@ -7,4 +7,7 @@ public interface DiscountInterface {
     double getDiscountAmount();
     int getDiscountItemLimit();
     LocalDate getDiscountDate();
+    Item getItem();
+
+    boolean isValidDiscount();
 }
