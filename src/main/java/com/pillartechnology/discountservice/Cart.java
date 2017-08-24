@@ -37,9 +37,15 @@ public class Cart {
     }
 
     public void applyDiscount(DiscountInterface discount) {
-        if(!discount.getDiscountDate().equals(LocalDate.now()))
+        if(!isValidDiscount(discount))
             return;
 
         this.applyDiscount(discount.getDiscountAmount(), discount.getDiscountType());
+    }
+
+    private boolean isValidDiscount(DiscountInterface discount){
+        if(discount.getDiscountDate() != null)
+            return discount.getDiscountDate().equals(LocalDate.now());
+        return this.itemsInCart >= discount.getDiscountItemLimit();
     }
 }

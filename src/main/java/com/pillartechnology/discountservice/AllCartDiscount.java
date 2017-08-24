@@ -28,11 +28,9 @@ public class AllCartDiscount implements DiscountInterface {
     private void setDiscountType(DiscountType discountType) {
         this.discountType = discountType;
     }
-
     private void setDiscountAmount(double discountAmount) {
         this.discountAmount = discountAmount;
     }
-
     private void setDiscountDate(LocalDate discountDate) {
         this.discountDate = discountDate;
     }
@@ -53,7 +51,5 @@ public class AllCartDiscount implements DiscountInterface {
     }
 
     @Override
-    public int getDiscountItemLimit() {
-        return 0;
-    }
+    public int getDiscountItemLimit() { return this.itemLimit; }
 }

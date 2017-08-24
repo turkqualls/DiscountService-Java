@@ -39,5 +39,8 @@ public class CartTest {
         Cart cart = new Cart(100.0d, 5);
         double discountAmount = .20d;
         DiscountInterface discount = new AllCartDiscount(DiscountType.Percentage, discountAmount, 5);
+
+        cart.applyDiscount(discount);
+        assertEquals(80.0d, cart.getAmountAfterDiscount(), 2);
     }
 }
