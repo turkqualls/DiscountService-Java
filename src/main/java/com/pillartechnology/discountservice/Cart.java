@@ -56,13 +56,30 @@ public class Cart {
     }
 
     private boolean isValidDiscount(DiscountInterface discount){
+        return isSpecificDayDiscount(discount) || isAmountOfItemsInCartDiscount(discount) ||
+                isAmountOfSpecificItemsInCartDiscount(discount) || isAmountOfSpecificItemTypeInCartDiscount(discount);
+    }
 
+    private boolean isSpecificDayDiscount(DiscountInterface discount) {
         if(discount.getDiscountDate() != null)
             return discount.getDiscountDate().equals(LocalDate.now());
+        return false;
+    }
 
+    private boolean isAmountOfItemsInCartDiscount(DiscountInterface discount){
+        return this.itemsInCart >= discount.getDiscountItemLimit();
+    }
+
+    private boolean isAmountOfSpecificItemsInCartDiscount(DiscountInterface discount) {
         if(discount.getItem() != null)
             return Collections.frequency(this.itemList, discount.getItem()) >= discount.getDiscountItemLimit();
+        return false;
+    }
 
-        return this.itemsInCart >= discount.getDiscountItemLimit();
+    private boolean isAmountOfSpecificItemTypeInCartDiscount(DiscountInterface discount) {
+        if(discount.getItemType() != null)
+            return itemList.stream().filter(i -> discount.getItemType().equals(i.getItemType())).count() >= discount
+                    .getDiscountItemLimit();
+        return false;
     }
 }

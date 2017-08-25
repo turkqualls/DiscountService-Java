@@ -8,4 +8,5 @@ public interface DiscountInterface {
     int getDiscountItemLimit();
     LocalDate getDiscountDate();
     Item getItem();
+    ItemType getItemType();
 }

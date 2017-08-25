@@ -9,6 +9,7 @@ public class AllCartDiscount implements DiscountInterface {
     private LocalDate discountDate;
     private int itemLimit;
     private Item item;
+    private ItemType itemType;
 
 
     public AllCartDiscount(DiscountType discountType, double discountAmount, LocalDate discountDate) {
@@ -30,6 +31,13 @@ public class AllCartDiscount implements DiscountInterface {
         this.setItem(item);
     }
 
+    public AllCartDiscount(DiscountType discountType, double discountAmount, int itemLimit, ItemType itemType) {
+        this.setDiscountType(discountType);
+        this.setDiscountAmount(discountAmount);
+        this.setItemLimit(itemLimit);
+        this.setItemType(itemType);
+    }
+
     private void setItemLimit(int itemLimit) {
         this.itemLimit = itemLimit;
     }
@@ -44,6 +52,9 @@ public class AllCartDiscount implements DiscountInterface {
     }
     private void setItem(Item item) {
         this.item = item;
+    }
+    private void setItemType(ItemType itemType) {
+        this.itemType = itemType;
     }
 
     @Override
@@ -64,6 +75,11 @@ public class AllCartDiscount implements DiscountInterface {
     @Override
     public Item getItem() {
         return this.item;
+    }
+
+    @Override
+    public ItemType getItemType() {
+        return this.itemType;
     }
 
     @Override

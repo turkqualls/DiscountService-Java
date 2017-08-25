@@ -1,5 +1,6 @@
 package com.pillartechnology.discountservice;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import java.time.LocalDate;
@@ -13,6 +14,11 @@ public class CartTest {
     private Cart cart;
     private DiscountInterface discount;
     private List<Item> itemList;
+
+    @Before
+    public void setup(){
+
+    }
 
     @Test
     public void getDiscountAmountFromCart(){
@@ -57,6 +63,29 @@ public class CartTest {
 
         cart = new Cart(100.0d, itemList);
         discount = new AllCartDiscount(DiscountType.Percentage, .20d, 2, item);
+
+        cart.applyDiscount(discount);
+        assertEquals(80.0d, cart.getAmountAfterDiscount(), 2);
+    }
+
+    @Test
+    public void getDiscountedPriceFromCartForCertainItemTypesInCart(){
+        itemList = new ArrayList<>();
+
+        Item electronicItem = new Item("Item", ItemType.Electronic);
+        Item electronic2Item = new Item("Item2", ItemType.Electronic);
+        Item clothingItem = new Item("Item4", ItemType.Clothing);
+        Item clothing2Item = new Item("Item3", ItemType.Clothing);
+        Item clothing3Item = new Item("Item3", ItemType.Clothing);
+
+        itemList.add(electronicItem);
+        itemList.add(electronic2Item);
+        itemList.add(clothingItem);
+        itemList.add(clothing2Item);
+        itemList.add(clothing3Item);
+
+        cart = new Cart(100.0d, itemList);
+        discount = new AllCartDiscount(DiscountType.Percentage, .20d, 3, ItemType.Clothing);
 
         cart.applyDiscount(discount);
         assertEquals(80.0d, cart.getAmountAfterDiscount(), 2);
