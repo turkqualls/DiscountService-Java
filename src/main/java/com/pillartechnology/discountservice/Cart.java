@@ -25,7 +25,6 @@ public class Cart {
 
     public Cart(double amountBeforeDiscount, List<Item> itemList) {
         this.itemList = itemList;
-        //this.itemsInCart = itemList.size();
         this.amountBeforeDiscount = amountBeforeDiscount;
     }
 
@@ -51,7 +50,7 @@ public class Cart {
     }
 
     public void applyDiscount(double discountAmount, DiscountType discountType) {
-        if(discountType == DiscountType.Dollar)
+        if(discountType.equals(DiscountType.Dollar))
             this.setAmountAfterDiscount(this.amountBeforeDiscount - discountAmount);
         else
             this.setAmountAfterDiscount(this.amountBeforeDiscount * (1 - discountAmount));
@@ -61,9 +60,40 @@ public class Cart {
         if(!isValidDiscount(discount))
             return;
 
-        this.applyDiscount(discount.getDiscountAmount(), discount.getDiscountType());
+        if (discount instanceof SingleItemDiscount)
+            this.applyDiscountToItem(discount);
+        else
+            this.applyDiscount(discount.getDiscountAmount(), discount.getDiscountType());
     }
 
+    private void applyDiscountToItem(DiscountInterface discount) {
+        for(Item item : itemList){
+            if (isItemDiscountable(discount, item))
+                applyDiscountToItem(discount, item);
+            this.amountAfterDiscount += item.getItemPrice();
+        }
+    }
+
+    private void applyDiscountToItem(DiscountInterface discount, Item item) {
+        if(discount.getDiscountType().equals(DiscountType.Dollar))
+            item.setItemPrice(item.getItemPrice() - discount.getDiscountAmount());
+        else
+            item.setItemPrice(item.getItemPrice() * (1 - discount.getDiscountAmount()));
+    }
+
+    private boolean isItemDiscountable(DiscountInterface discount, Item item) {
+
+        if(discount.getItem() != null)
+            return item.equals(discount.getItem());
+
+        if(discount.getItemType() != null)
+            return item.getItemType().equals(discount.getItemType());
+
+        if(discount.getDiscountDate() != null)
+            return discount.getDiscountDate().equals(LocalDate.now());
+
+        return false;
+    }
     private boolean isValidDiscount(DiscountInterface discount){
         return isSpecificDayDiscount(discount) || isAmountOfItemsInCartDiscount(discount) ||
                 isAmountOfSpecificItemsInCartDiscount(discount) || isAmountOfSpecificItemTypeInCartDiscount(discount);

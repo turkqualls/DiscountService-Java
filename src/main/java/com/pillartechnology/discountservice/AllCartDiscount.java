@@ -13,47 +13,28 @@ public class AllCartDiscount implements DiscountInterface {
 
 
     public AllCartDiscount(DiscountType discountType, double discountAmount, LocalDate discountDate) {
-        this.setDiscountType(discountType);
-        this.setDiscountAmount(discountAmount);
-        this.setDiscountDate(discountDate);
+        this.discountType = discountType;
+        this.discountAmount = discountAmount;
+        this.discountDate = discountDate;
     }
 
     public AllCartDiscount(DiscountType discountType, double discountAmount, int itemLimit) {
-        this.setDiscountType(discountType);
-        this.setDiscountAmount(discountAmount);
-        this.setItemLimit(itemLimit);
+        this.discountType = discountType;
+        this.discountAmount = discountAmount;
+        this.itemLimit = itemLimit;
     }
 
     public AllCartDiscount(DiscountType discountType, double discountAmount, int itemLimit, Item item) {
-        this.setDiscountType(discountType);
-        this.setDiscountAmount(discountAmount);
-        this.setItemLimit(itemLimit);
-        this.setItem(item);
+        this.discountType = discountType;
+        this.discountAmount = discountAmount;
+        this.itemLimit = itemLimit;
+        this.item = item;
     }
 
     public AllCartDiscount(DiscountType discountType, double discountAmount, int itemLimit, ItemType itemType) {
-        this.setDiscountType(discountType);
-        this.setDiscountAmount(discountAmount);
-        this.setItemLimit(itemLimit);
-        this.setItemType(itemType);
-    }
-
-    private void setItemLimit(int itemLimit) {
-        this.itemLimit = itemLimit;
-    }
-    private void setDiscountType(DiscountType discountType) {
         this.discountType = discountType;
-    }
-    private void setDiscountAmount(double discountAmount) {
         this.discountAmount = discountAmount;
-    }
-    private void setDiscountDate(LocalDate discountDate) {
-        this.discountDate = discountDate;
-    }
-    private void setItem(Item item) {
-        this.item = item;
-    }
-    private void setItemType(ItemType itemType) {
+        this.itemLimit = itemLimit;
         this.itemType = itemType;
     }
 
