@@ -90,4 +90,35 @@ public class CartTest {
         cart.applyDiscount(discount);
         assertEquals(80.0d, cart.getAmountAfterDiscount(), 2);
     }
+
+    @Test
+    public void getPriceFromCartWhenItemsAreAdded(){
+        itemList = new ArrayList<>();
+        Item electronicItem = new Item("Electric", ItemType.Electronic, 10.0d);
+        Item clothingItem = new Item("Clothes", ItemType.Clothing, 10.0d);
+        Item bookItem = new Item("Book", ItemType.Book, 10.0d);
+
+        itemList.add(electronicItem);
+        itemList.add(clothingItem);
+        itemList.add(bookItem);
+
+        cart = new Cart(itemList);
+        assertEquals(30.0d, cart.getAmountBeforeDiscount(), 2);
+    }
+
+//    @Test
+//    public void getPriceOfCartWhenSpecialDiscountIsAppliedForAnItem() {
+//        itemList = new ArrayList<>();
+//
+//        Item electronicItem = new Item("Electric", ItemType.Electronic, 10.0d);
+//        Item clothingItem = new Item("Clothes", ItemType.Clothing, 10.0d);
+//        Item bookItem = new Item("Book", ItemType.Book, 10.0d);
+//
+//        itemList.add(electronicItem);
+//        itemList.add(clothingItem);
+//        itemList.add(bookItem);
+//
+//        cart = new Cart(itemList);
+//
+//    }
 }

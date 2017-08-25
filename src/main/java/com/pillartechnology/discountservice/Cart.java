@@ -29,8 +29,17 @@ public class Cart {
         this.amountBeforeDiscount = amountBeforeDiscount;
     }
 
+    public Cart(List<Item> itemList) {
+        this.itemList = itemList;
+        getTotalPriceOfItems();
+    }
+
     private void setAmountAfterDiscount(double amountAfterDiscount) {
         this.amountAfterDiscount = amountAfterDiscount;
+    }
+
+    public double getAmountBeforeDiscount() {
+        return amountBeforeDiscount;
     }
 
     public double getAmountAfterDiscount() {
@@ -81,5 +90,10 @@ public class Cart {
             return itemList.stream().filter(i -> discount.getItemType().equals(i.getItemType())).count() >= discount
                     .getDiscountItemLimit();
         return false;
+    }
+
+    private void getTotalPriceOfItems() {
+        for(Item item : itemList)
+            this.amountBeforeDiscount += item.getItemPrice();
     }
 }
