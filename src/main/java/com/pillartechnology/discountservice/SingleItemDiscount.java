@@ -7,7 +7,6 @@ public class SingleItemDiscount implements DiscountInterface {
     private DiscountType discountType;
     private double discountAmount;
     private LocalDate discountDate;
-    private int itemLimit;
     private Item item;
     private ItemType itemType;
 
@@ -42,7 +41,7 @@ public class SingleItemDiscount implements DiscountInterface {
 
     @Override
     public int getDiscountItemLimit() {
-        return this.itemLimit;
+        return 1;
     }
 
     @Override

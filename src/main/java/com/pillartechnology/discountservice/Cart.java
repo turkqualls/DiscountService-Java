@@ -82,18 +82,30 @@ public class Cart {
     }
 
     private boolean isItemDiscountable(DiscountInterface discount, Item item) {
+        return (doesDiscountApplyForItem(discount, item) || doesDiscountApplyForItemType(discount, item)) && applyDiscountIfDateApply(discount);
+    }
 
+    private boolean doesDiscountApplyForItem(DiscountInterface discount, Item item){
         if(discount.getItem() != null)
             return item.equals(discount.getItem());
 
+        return false;
+    }
+
+    private boolean doesDiscountApplyForItemType(DiscountInterface discount, Item item){
         if(discount.getItemType() != null)
             return item.getItemType().equals(discount.getItemType());
 
-        if(discount.getDiscountDate() != null)
-            return discount.getDiscountDate().equals(LocalDate.now());
-
         return false;
     }
+
+    private boolean applyDiscountIfDateApply(DiscountInterface discount){
+        if (discount.getDiscountDate() != null)
+            return discount.getDiscountDate().equals(LocalDate.now());
+
+        return true;
+    }
+
     private boolean isValidDiscount(DiscountInterface discount){
         return isSpecificDayDiscount(discount) || isAmountOfItemsInCartDiscount(discount) ||
                 isAmountOfSpecificItemsInCartDiscount(discount) || isAmountOfSpecificItemTypeInCartDiscount(discount);
@@ -117,7 +129,7 @@ public class Cart {
 
     private boolean isAmountOfSpecificItemTypeInCartDiscount(DiscountInterface discount) {
         if(discount.getItemType() != null)
-            return itemList.stream().filter(i -> discount.getItemType().equals(i.getItemType())).count() >= discount
+            return itemList.stream().filter(item -> discount.getItemType().equals(item.getItemType())).count() >= discount
                     .getDiscountItemLimit();
         return false;
     }
