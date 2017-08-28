@@ -8,7 +8,7 @@ public class Cart {
     private double amountBeforeDiscount = Double.MIN_VALUE;
     private double amountAfterDiscount = Double.MIN_VALUE;
     private int itemsInCart = Integer.MIN_VALUE;
-    private Items itemList;
+    private Items items;
 
     public Cart(double amountBeforeDiscount) {
         this.amountBeforeDiscount = amountBeforeDiscount;
@@ -19,13 +19,13 @@ public class Cart {
         this.itemsInCart = items;
     }
 
-    public Cart(double amountBeforeDiscount, Items itemList) {
-        this.itemList = itemList;
+    public Cart(double amountBeforeDiscount, Items items) {
+        this.items = items;
         this.amountBeforeDiscount = amountBeforeDiscount;
     }
 
-    public Cart(Items itemList) {
-        this.itemList = itemList;
+    public Cart(Items items) {
+        this.items = items;
         this.amountBeforeDiscount = getTotalPriceOfItems();
     }
 
@@ -57,7 +57,7 @@ public class Cart {
     }
 
     private void applyDiscountToItem(DiscountInterface discount) {
-        for(Item item : itemList){
+        for(Item item : items){
             if (canItemBeDiscounted(discount, item))
                 applyDiscountToItem(discount, item);
             this.amountAfterDiscount += item.getItemPrice();
@@ -100,17 +100,17 @@ public class Cart {
     }
 
     private boolean isAmountOfSpecificItemsInCartDiscount(DiscountInterface discount) {
-        return discount.getItem() != null && Collections.frequency(this.itemList, discount.getItem()) >= discount
+        return discount.getItem() != null && Collections.frequency(this.items, discount.getItem()) >= discount
                 .getDiscountItemLimit();
     }
 
     private boolean isAmountOfSpecificItemTypeInCartDiscount(DiscountInterface discount) {
-        return discount.getItemType() != null && itemList.stream().filter(item -> discount.getItemType().equals(item.getItemType())).count() >= discount.getDiscountItemLimit();
+        return discount.getItemType() != null && items.stream().filter(item -> discount.getItemType().equals(item.getItemType())).count() >= discount.getDiscountItemLimit();
 }
 
     private double getTotalPriceOfItems() {
         double total = 0.0d;
-        for(Item item : itemList)
+        for(Item item : items)
             total += item.getItemPriceBeforeDiscount();
         return total;
     }
