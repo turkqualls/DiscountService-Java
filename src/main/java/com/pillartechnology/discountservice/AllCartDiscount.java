@@ -1,13 +1,14 @@
 package com.pillartechnology.discountservice;
 
 import java.time.LocalDate;
+import java.util.Collections;
 
 public class AllCartDiscount implements DiscountInterface {
 
     private DiscountType discountType;
-    private double discountAmount;
+    private Double discountAmount;
     private LocalDate discountDate;
-    private int itemLimit;
+    private Integer itemLimit;
     private Item item;
     private ItemType itemType;
 
@@ -66,5 +67,25 @@ public class AllCartDiscount implements DiscountInterface {
     @Override
     public int getDiscountItemLimit() {
         return this.itemLimit;
+    }
+
+    public boolean isValid(Items items, int itemsCount) {
+        return isSpecificDayDiscount() || isAmountOfItemsInCartDiscount(itemsCount) ||  isAmountOfSpecificItemsInCartDiscount(items) || isAmountOfSpecificItemTypeInCartDiscount(items);
+    }
+
+    private boolean isSpecificDayDiscount() {
+        return this.discountDate != null && this.discountDate.equals(LocalDate.now());
+    }
+
+    private boolean isAmountOfItemsInCartDiscount(Integer itemsInCart){
+        return itemsInCart >= this.itemLimit;
+    }
+
+    private boolean isAmountOfSpecificItemsInCartDiscount(Items items) {
+        return this.item != null && Collections.frequency(items, this.item) >= this.itemLimit;
+    }
+
+    private boolean isAmountOfSpecificItemTypeInCartDiscount(Items items) {
+        return this.itemType != null && items.stream().filter(item -> this.itemType.equals(item.getItemType())).count() >= this.itemLimit;
     }
 }

@@ -5,18 +5,18 @@ import java.util.Collections;
 
 public class Cart {
 
-    private double amountBeforeDiscount = Double.MIN_VALUE;
-    private double amountAfterDiscount = Double.MIN_VALUE;
-    private int itemsInCart = Integer.MIN_VALUE;
+    private Double amountBeforeDiscount = Double.MIN_VALUE;
+    private Double amountAfterDiscount = Double.MIN_VALUE;
+    private Integer itemsInCart = Integer.MIN_VALUE;
     private Items items;
 
     public Cart(double amountBeforeDiscount) {
         this.amountBeforeDiscount = amountBeforeDiscount;
     }
 
-    public Cart(double amountBeforeDiscount, int items) {
+    public Cart(double amountBeforeDiscount, int itemsInCart) {
         this.amountBeforeDiscount = amountBeforeDiscount;
-        this.itemsInCart = items;
+        this.itemsInCart = itemsInCart;
     }
 
     public Cart(double amountBeforeDiscount, Items items) {
@@ -26,6 +26,7 @@ public class Cart {
 
     public Cart(Items items) {
         this.items = items;
+        this.itemsInCart = items.size();
         this.amountBeforeDiscount = getTotalPriceOfItems();
     }
 
@@ -53,7 +54,7 @@ public class Cart {
     }
 
     private boolean isDiscountForCart(DiscountInterface discount){
-        return discount instanceof AllCartDiscount && isValidDiscount(discount);
+        return discount instanceof AllCartDiscount && ((AllCartDiscount) discount).isValid(this.items, this.itemsInCart);
     }
 
     private void applyDiscountToItem(DiscountInterface discount) {
@@ -85,28 +86,6 @@ public class Cart {
     private boolean applyDiscountToItemIfDateApply(DiscountInterface discount){
             return  discount.getDiscountDate() == null || discount.getDiscountDate().equals(LocalDate.now());
     }
-
-    private boolean isValidDiscount(DiscountInterface discount){
-        return isSpecificDayDiscount(discount) || isAmountOfItemsInCartDiscount(discount) ||
-                isAmountOfSpecificItemsInCartDiscount(discount) || isAmountOfSpecificItemTypeInCartDiscount(discount);
-    }
-
-    private boolean isSpecificDayDiscount(DiscountInterface discount) {
-        return discount.getDiscountDate() != null && discount.getDiscountDate().equals(LocalDate.now());
-    }
-
-    private boolean isAmountOfItemsInCartDiscount(DiscountInterface discount){
-        return this.itemsInCart >= discount.getDiscountItemLimit();
-    }
-
-    private boolean isAmountOfSpecificItemsInCartDiscount(DiscountInterface discount) {
-        return discount.getItem() != null && Collections.frequency(this.items, discount.getItem()) >= discount
-                .getDiscountItemLimit();
-    }
-
-    private boolean isAmountOfSpecificItemTypeInCartDiscount(DiscountInterface discount) {
-        return discount.getItemType() != null && items.stream().filter(item -> discount.getItemType().equals(item.getItemType())).count() >= discount.getDiscountItemLimit();
-}
 
     private double getTotalPriceOfItems() {
         double total = 0.0d;
