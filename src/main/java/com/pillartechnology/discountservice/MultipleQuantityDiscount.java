@@ -1,8 +1,6 @@
 package com.pillartechnology.discountservice;
 
-import java.time.LocalDate;
-
-public class MultipleQuantityDiscount implements DiscountInterface {
+public class MultipleQuantityDiscount implements Discount {
 
 
     @Override
@@ -11,27 +9,7 @@ public class MultipleQuantityDiscount implements DiscountInterface {
     }
 
     @Override
-    public double getDiscountAmount() {
-        return 0;
-    }
-
-    @Override
-    public int getDiscountItemLimit() {
-        return 0;
-    }
-
-    @Override
-    public LocalDate getDiscountDate() {
-        return null;
-    }
-
-    @Override
-    public Item getItem() {
-        return null;
-    }
-
-    @Override
-    public ItemType getItemType() {
-        return null;
+    public Double getDiscountAmount() {
+        return Double.MIN_VALUE;
     }
 }

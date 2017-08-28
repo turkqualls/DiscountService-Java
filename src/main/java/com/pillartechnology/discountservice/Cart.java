@@ -1,8 +1,5 @@
 package com.pillartechnology.discountservice;
 
-import java.time.LocalDate;
-import java.util.Collections;
-
 public class Cart {
 
     private Double amountBeforeDiscount = Double.MIN_VALUE;
@@ -27,7 +24,7 @@ public class Cart {
     public Cart(Items items) {
         this.items = items;
         this.itemsInCart = items.size();
-        this.amountBeforeDiscount = getTotalPriceOfItems();
+        this.amountBeforeDiscount = items.getTotalPriceOfItemsBeforeDiscount();
     }
 
     public double getAmountBeforeDiscount() {
@@ -35,69 +32,25 @@ public class Cart {
     }
 
     public double getAmountAfterDiscount() {
-        return amountAfterDiscount;
+        return this.amountAfterDiscount > Double.MIN_VALUE ? this.amountAfterDiscount : items.getTotalPriceOfItemsAfterDiscount();
     }
 
-    public void applyDiscount(double discountAmount) {
-        this.amountAfterDiscount = calculateDiscount(DiscountType.Percentage, this.amountBeforeDiscount, discountAmount);
+    public void applyDiscount(Double discountAmount) {
+        this.amountAfterDiscount = CalculateDiscountHelper.calculateDiscount(DiscountType.Percentage, this.amountBeforeDiscount, discountAmount);
     }
 
-    public void applyDiscount(double discountAmount, DiscountType discountType) {
-        this.amountAfterDiscount = calculateDiscount(discountType, this.amountBeforeDiscount, discountAmount);
+    public void applyDiscount(Double discountAmount, DiscountType discountType) {
+        this.amountAfterDiscount = CalculateDiscountHelper.calculateDiscount(discountType, this.amountBeforeDiscount, discountAmount);
     }
 
-    public void applyDiscount(DiscountInterface discount) {
+    public void applyDiscount(Discount discount) {
         if(isDiscountForCart(discount))
-            this.amountAfterDiscount = calculateDiscount(discount.getDiscountType(), this.amountBeforeDiscount, discount.getDiscountAmount());
+            this.amountAfterDiscount = CalculateDiscountHelper.calculateDiscount(discount.getDiscountType(), this.amountBeforeDiscount, discount.getDiscountAmount());
         else
-            this.applyDiscountToItem(discount);
+            items.applyDiscountToItems(discount);
     }
 
-    private boolean isDiscountForCart(DiscountInterface discount){
+    private boolean isDiscountForCart(Discount discount){
         return discount instanceof AllCartDiscount && ((AllCartDiscount) discount).isValid(this.items, this.itemsInCart);
-    }
-
-    private void applyDiscountToItem(DiscountInterface discount) {
-        for(Item item : items){
-            if (canItemBeDiscounted(discount, item))
-                applyDiscountToItem(discount, item);
-            this.amountAfterDiscount += item.getItemPrice();
-        }
-    }
-
-    private void applyDiscountToItem(DiscountInterface discount, Item item) {
-        item.setItemPriceAfterDiscount(calculateDiscount(discount.getDiscountType(), item.getItemPriceBeforeDiscount
-                (), discount.getDiscountAmount()));
-    }
-
-    private boolean canItemBeDiscounted(DiscountInterface discount, Item item) {
-        return (doesDiscountApplyForItem(discount, item) ||
-                doesDiscountApplyForItemType(discount, item)) && applyDiscountToItemIfDateApply(discount);
-    }
-
-    private boolean doesDiscountApplyForItem(DiscountInterface discount, Item item){
-        return discount.getItem() != null && item.equals(discount.getItem());
-    }
-
-    private boolean doesDiscountApplyForItemType(DiscountInterface discount, Item item){
-        return discount.getItemType() != null && item.getItemType().equals(discount.getItemType());
-    }
-
-    private boolean applyDiscountToItemIfDateApply(DiscountInterface discount){
-            return  discount.getDiscountDate() == null || discount.getDiscountDate().equals(LocalDate.now());
-    }
-
-    private double getTotalPriceOfItems() {
-        double total = 0.0d;
-        for(Item item : items)
-            total += item.getItemPriceBeforeDiscount();
-        return total;
-    }
-
-    private double calculateDiscount(DiscountType discountType, double initialValue, double discountValue){
-        if(discountType.equals(DiscountType.Dollar))
-            return initialValue - discountValue;
-        else
-            return initialValue * (1 - discountValue);
     }
 }

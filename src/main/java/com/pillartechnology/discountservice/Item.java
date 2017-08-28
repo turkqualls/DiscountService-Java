@@ -3,8 +3,8 @@ package com.pillartechnology.discountservice;
 public class Item {
     private String name;
     private ItemType itemType;
-    private double itemPriceBeforeDiscount = Double.MIN_VALUE;
-    private double itemPriceAfterDiscount = Double.MIN_VALUE;
+    private Double itemPriceBeforeDiscount = Double.MIN_VALUE;
+    private Double itemPriceAfterDiscount = Double.MIN_VALUE;
 
     public Item(String name) {
         this.name = name;
@@ -15,7 +15,7 @@ public class Item {
         this.itemType = itemType;
     }
 
-    public Item(String name, ItemType itemType, double itemPrice) {
+    public Item(String name, ItemType itemType, Double itemPrice) {
         this.name = name;
         this.itemType = itemType;
         this.itemPriceBeforeDiscount = itemPrice;
@@ -25,15 +25,16 @@ public class Item {
         return itemType;
     }
 
-    public void setItemPriceAfterDiscount(double itemPriceAfterDiscount) {
-        this.itemPriceAfterDiscount = itemPriceAfterDiscount;
-    }
-
-    public double getItemPriceBeforeDiscount() {
+    public Double getItemPriceBeforeDiscount() {
         return itemPriceBeforeDiscount;
     }
 
-    public double getItemPrice() {
+    public Double getItemPrice() {
         return this.itemPriceAfterDiscount > Double.MIN_VALUE ? this.itemPriceAfterDiscount : this.itemPriceBeforeDiscount;
+    }
+
+    public void applyDiscountToItem(Discount discount){
+        this.itemPriceAfterDiscount = CalculateDiscountHelper.calculateDiscount(discount.getDiscountType(), this
+                .itemPriceBeforeDiscount, discount.getDiscountAmount());
     }
 }

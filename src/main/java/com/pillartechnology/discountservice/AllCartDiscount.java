@@ -3,7 +3,7 @@ package com.pillartechnology.discountservice;
 import java.time.LocalDate;
 import java.util.Collections;
 
-public class AllCartDiscount implements DiscountInterface {
+public class AllCartDiscount implements Discount {
 
     private DiscountType discountType;
     private Double discountAmount;
@@ -45,31 +45,11 @@ public class AllCartDiscount implements DiscountInterface {
     }
 
     @Override
-    public double getDiscountAmount() {
+    public Double getDiscountAmount() {
         return this.discountAmount;
     }
 
-    @Override
-    public LocalDate getDiscountDate() {
-        return this.discountDate;
-    }
-
-    @Override
-    public Item getItem() {
-        return this.item;
-    }
-
-    @Override
-    public ItemType getItemType() {
-        return this.itemType;
-    }
-
-    @Override
-    public int getDiscountItemLimit() {
-        return this.itemLimit;
-    }
-
-    public boolean isValid(Items items, int itemsCount) {
+    public boolean isValid(Items items, Integer itemsCount) {
         return isSpecificDayDiscount() || isAmountOfItemsInCartDiscount(itemsCount) ||  isAmountOfSpecificItemsInCartDiscount(items) || isAmountOfSpecificItemTypeInCartDiscount(items);
     }
 

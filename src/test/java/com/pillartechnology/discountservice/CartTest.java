@@ -9,7 +9,7 @@ import static org.junit.Assert.*;
 public class CartTest {
 
     private Cart cart;
-    private DiscountInterface discount;
+    private Discount discount;
     private Items items;
 
     @Before
@@ -29,7 +29,7 @@ public class CartTest {
     public void getDiscountedPriceFromCartAfterDollarAmountDiscount(){
         cart = new Cart(100.0d);
 
-        cart.applyDiscount(15, DiscountType.Dollar);
+        cart.applyDiscount(15.0d, DiscountType.Dollar);
         assertEquals(85.0d, cart.getAmountAfterDiscount(), 2);
     }
 

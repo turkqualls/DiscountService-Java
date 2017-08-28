@@ -2,10 +2,10 @@ package com.pillartechnology.discountservice;
 
 import java.time.LocalDate;
 
-public class SingleItemDiscount implements DiscountInterface {
+public class SingleItemDiscount implements Discount {
 
     private DiscountType discountType;
-    private double discountAmount;
+    private Double discountAmount;
     private LocalDate discountDate;
     private Item item;
     private ItemType itemType;
@@ -35,27 +35,23 @@ public class SingleItemDiscount implements DiscountInterface {
     }
 
     @Override
-    public double getDiscountAmount() {
+    public Double getDiscountAmount() {
         return this.discountAmount;
     }
 
-    @Override
-    public int getDiscountItemLimit() {
-        return 1;
+    public boolean isValid(Item item) {
+        return (isItemDiscountableBaseOnItem(item) || isItemDiscountableBaseOnItemType(item)) && doesDateApply();
     }
 
-    @Override
-    public LocalDate getDiscountDate() {
-        return this.discountDate;
+    private boolean isItemDiscountableBaseOnItem(Item item){
+        return this.item != null && item.equals(this.item);
     }
 
-    @Override
-    public Item getItem() {
-        return this.item;
+    private boolean isItemDiscountableBaseOnItemType(Item item){
+        return this.itemType != null && item.getItemType().equals(this.itemType);
     }
 
-    @Override
-    public ItemType getItemType() {
-        return this.itemType;
+    private boolean doesDateApply(){
+        return  this.discountDate == null || this.discountDate.equals(LocalDate.now());
     }
 }
