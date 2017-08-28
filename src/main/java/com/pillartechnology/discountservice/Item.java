@@ -3,8 +3,8 @@ package com.pillartechnology.discountservice;
 public class Item {
     private String name;
     private ItemType itemType;
-    private double itemPriceBeforeDiscount;
-    private double itemPriceAfterDiscount;
+    private double itemPriceBeforeDiscount = Double.MIN_VALUE;
+    private double itemPriceAfterDiscount = Double.MIN_VALUE;
 
     public Item(String name) {
         this.name = name;
@@ -34,6 +34,6 @@ public class Item {
     }
 
     public double getItemPrice() {
-        return this.itemPriceAfterDiscount > 0.0d ? this.itemPriceAfterDiscount : this.itemPriceBeforeDiscount;
+        return this.itemPriceAfterDiscount > Double.MIN_VALUE ? this.itemPriceAfterDiscount : this.itemPriceBeforeDiscount;
     }
 }
