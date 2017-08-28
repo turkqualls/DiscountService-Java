@@ -1,34 +1,30 @@
 package com.pillartechnology.discountservice;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 public class Cart {
 
     private double amountBeforeDiscount = Double.MIN_VALUE;
     private double amountAfterDiscount = Double.MIN_VALUE;
     private int itemsInCart = Integer.MIN_VALUE;
-    private List<Item> itemList;
+    private Items itemList;
 
     public Cart(double amountBeforeDiscount) {
         this.amountBeforeDiscount = amountBeforeDiscount;
-        this.itemList = new ArrayList<>();
     }
 
     public Cart(double amountBeforeDiscount, int items) {
         this.amountBeforeDiscount = amountBeforeDiscount;
         this.itemsInCart = items;
-        this.itemList = new ArrayList<>();
     }
 
-    public Cart(double amountBeforeDiscount, List<Item> itemList) {
+    public Cart(double amountBeforeDiscount, Items itemList) {
         this.itemList = itemList;
         this.amountBeforeDiscount = amountBeforeDiscount;
     }
 
-    public Cart(List<Item> itemList) {
+    public Cart(Items itemList) {
         this.itemList = itemList;
         this.amountBeforeDiscount = getTotalPriceOfItems();
     }

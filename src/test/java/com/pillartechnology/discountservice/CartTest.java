@@ -1,11 +1,8 @@
 package com.pillartechnology.discountservice;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -13,7 +10,7 @@ public class CartTest {
 
     private Cart cart;
     private DiscountInterface discount;
-    private List<Item> itemList;
+    private Items items;
 
     @Before
     public void setup(){
@@ -56,12 +53,12 @@ public class CartTest {
 
     @Test
     public void getDiscountedPriceFromCartForCertainAMountOfSpecificItem(){
-        itemList = new ArrayList<>();
+        items = new Items();
         Item item = new Item("Item");
-        itemList.add(item);
-        itemList.add(item);
+        items.add(item);
+        items.add(item);
 
-        cart = new Cart(100.0d, itemList);
+        cart = new Cart(100.0d, items);
         discount = new AllCartDiscount(DiscountType.Percentage, .20d, 2, item);
 
         cart.applyDiscount(discount);
@@ -70,7 +67,7 @@ public class CartTest {
 
     @Test
     public void getDiscountedPriceFromCartForCertainItemTypesInCart(){
-        itemList = new ArrayList<>();
+        items = new Items();
 
         Item electronicItem = new Item("Item", ItemType.Electronic);
         Item electronic2Item = new Item("Item2", ItemType.Electronic);
@@ -78,13 +75,13 @@ public class CartTest {
         Item clothing2Item = new Item("Item3", ItemType.Clothing);
         Item clothing3Item = new Item("Item3", ItemType.Clothing);
 
-        itemList.add(electronicItem);
-        itemList.add(electronic2Item);
-        itemList.add(clothingItem);
-        itemList.add(clothing2Item);
-        itemList.add(clothing3Item);
+        items.add(electronicItem);
+        items.add(electronic2Item);
+        items.add(clothingItem);
+        items.add(clothing2Item);
+        items.add(clothing3Item);
 
-        cart = new Cart(100.0d, itemList);
+        cart = new Cart(100.0d, items);
         discount = new AllCartDiscount(DiscountType.Percentage, .20d, 3, ItemType.Clothing);
 
         cart.applyDiscount(discount);
@@ -93,32 +90,32 @@ public class CartTest {
 
     @Test
     public void getPriceFromCartWhenItemsAreAdded(){
-        itemList = new ArrayList<>();
+        items = new Items();
         Item electronicItem = new Item("Electric", ItemType.Electronic, 10.0d);
         Item clothingItem = new Item("Clothes", ItemType.Clothing, 10.0d);
         Item bookItem = new Item("Book", ItemType.Book, 10.0d);
 
-        itemList.add(electronicItem);
-        itemList.add(clothingItem);
-        itemList.add(bookItem);
+        items.add(electronicItem);
+        items.add(clothingItem);
+        items.add(bookItem);
 
-        cart = new Cart(itemList);
+        cart = new Cart(items);
         assertEquals(30.0d, cart.getAmountBeforeDiscount(), 2);
     }
 
     @Test
     public void getPriceOfCartWhenSpecialDiscountIsAppliedForAnItem() {
-        itemList = new ArrayList<>();
+        items = new Items();
 
         Item electronicItem = new Item("Electric", ItemType.Electronic, 10.0d);
         Item clothingItem = new Item("Clothes", ItemType.Clothing, 10.0d);
         Item bookItem = new Item("Book", ItemType.Book, 10.0d);
 
-        itemList.add(electronicItem);
-        itemList.add(clothingItem);
-        itemList.add(bookItem);
+        items.add(electronicItem);
+        items.add(clothingItem);
+        items.add(bookItem);
 
-        cart = new Cart(itemList);
+        cart = new Cart(items);
         discount = new SingleItemDiscount(DiscountType.Percentage, .25d, bookItem);
 
         cart.applyDiscount(discount);
@@ -127,17 +124,17 @@ public class CartTest {
 
     @Test
     public void getPriceOfCartWhenSpecialDollarDiscountIsAppliedForAnItem() {
-        itemList = new ArrayList<>();
+        items = new Items();
 
         Item electronicItem = new Item("Electric", ItemType.Electronic, 10.0d);
         Item clothingItem = new Item("Clothes", ItemType.Clothing, 10.0d);
         Item bookItem = new Item("Book", ItemType.Book, 10.0d);
 
-        itemList.add(electronicItem);
-        itemList.add(clothingItem);
-        itemList.add(bookItem);
+        items.add(electronicItem);
+        items.add(clothingItem);
+        items.add(bookItem);
 
-        cart = new Cart(itemList);
+        cart = new Cart(items);
         discount = new SingleItemDiscount(DiscountType.Dollar, 5, bookItem);
 
         cart.applyDiscount(discount);
@@ -146,17 +143,17 @@ public class CartTest {
 
     @Test
     public void getPriceOfCartWhenSpecialDiscountIsAppliedToSpecificTypeOfItem() {
-        itemList = new ArrayList<>();
+        items = new Items();
 
         Item electronicItem = new Item("Electric", ItemType.Electronic, 10.0d);
         Item clothingItem = new Item("Clothes", ItemType.Clothing, 10.0d);
         Item bookItem = new Item("Book", ItemType.Book, 10.0d);
 
-        itemList.add(electronicItem);
-        itemList.add(clothingItem);
-        itemList.add(bookItem);
+        items.add(electronicItem);
+        items.add(clothingItem);
+        items.add(bookItem);
 
-        cart = new Cart(itemList);
+        cart = new Cart(items);
         discount = new SingleItemDiscount(DiscountType.Percentage, .25d, ItemType.Book);
 
         cart.applyDiscount(discount);
@@ -165,17 +162,17 @@ public class CartTest {
 
     @Test
     public void getPriceOfCartWhenSpecialDiscountIsAppliedToSpecificOfItemForTheDay() {
-        itemList = new ArrayList<>();
+        items = new Items();
 
         Item electronicItem = new Item("Electric", ItemType.Electronic, 10.0d);
         Item clothingItem = new Item("Clothes", ItemType.Clothing, 10.0d);
         Item bookItem = new Item("Book", ItemType.Book, 10.0d);
 
-        itemList.add(electronicItem);
-        itemList.add(clothingItem);
-        itemList.add(bookItem);
+        items.add(electronicItem);
+        items.add(clothingItem);
+        items.add(bookItem);
 
-        cart = new Cart(itemList);
+        cart = new Cart(items);
         discount = new SingleItemDiscount(DiscountType.Percentage, .25d,  LocalDate.now(), bookItem);
 
         cart.applyDiscount(discount);
