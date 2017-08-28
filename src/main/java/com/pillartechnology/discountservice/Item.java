@@ -3,7 +3,12 @@ package com.pillartechnology.discountservice;
 public class Item {
     private String name;
     private ItemType itemType;
-    private double itemPrice;
+    private double itemPriceBeforeDiscount;
+    private double itemPriceAfterDiscount;
+
+    public Item(String name) {
+        this.name = name;
+    }
 
     public Item(String name, ItemType itemType) {
         this.name = name;
@@ -13,22 +18,22 @@ public class Item {
     public Item(String name, ItemType itemType, double itemPrice) {
         this.name = name;
         this.itemType = itemType;
-        this.itemPrice = itemPrice;
-    }
-
-    public Item(String name) {
-        this.name = name;
+        this.itemPriceBeforeDiscount = itemPrice;
     }
 
     public ItemType getItemType() {
         return itemType;
     }
 
-    public double getItemPrice() {
-        return itemPrice;
+    public void setItemPriceAfterDiscount(double itemPriceAfterDiscount) {
+        this.itemPriceAfterDiscount = itemPriceAfterDiscount;
     }
 
-    public void setItemPrice(double itemPrice) {
-        this.itemPrice = itemPrice;
+    public double getItemPriceBeforeDiscount() {
+        return itemPriceBeforeDiscount;
+    }
+
+    public double getItemPrice() {
+        return this.itemPriceAfterDiscount > 0.0d ? this.itemPriceAfterDiscount : this.itemPriceBeforeDiscount;
     }
 }

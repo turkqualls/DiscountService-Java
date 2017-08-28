@@ -33,10 +33,6 @@ public class Cart {
         getTotalPriceOfItems();
     }
 
-    private void setAmountAfterDiscount(double amountAfterDiscount) {
-        this.amountAfterDiscount = amountAfterDiscount;
-    }
-
     public double getAmountBeforeDiscount() {
         return amountBeforeDiscount;
     }
@@ -51,9 +47,9 @@ public class Cart {
 
     public void applyDiscount(double discountAmount, DiscountType discountType) {
         if(discountType.equals(DiscountType.Dollar))
-            this.setAmountAfterDiscount(this.amountBeforeDiscount - discountAmount);
+            this.amountAfterDiscount = this.amountBeforeDiscount - discountAmount;
         else
-            this.setAmountAfterDiscount(this.amountBeforeDiscount * (1 - discountAmount));
+            this.amountAfterDiscount = this.amountBeforeDiscount * (1 - discountAmount);
     }
 
     public void applyDiscount(DiscountInterface discount) {
@@ -68,7 +64,7 @@ public class Cart {
 
     private void applyDiscountToItem(DiscountInterface discount) {
         for(Item item : itemList){
-            if (isItemDiscountable(discount, item))
+            if (canItemBeDiscounted(discount, item))
                 applyDiscountToItem(discount, item);
             this.amountAfterDiscount += item.getItemPrice();
         }
@@ -76,33 +72,27 @@ public class Cart {
 
     private void applyDiscountToItem(DiscountInterface discount, Item item) {
         if(discount.getDiscountType().equals(DiscountType.Dollar))
-            item.setItemPrice(item.getItemPrice() - discount.getDiscountAmount());
+            item.setItemPriceAfterDiscount(item.getItemPriceBeforeDiscount() - discount.getDiscountAmount());
         else
-            item.setItemPrice(item.getItemPrice() * (1 - discount.getDiscountAmount()));
+            item.setItemPriceAfterDiscount(item.getItemPriceBeforeDiscount() * (1 - discount.getDiscountAmount()));
     }
 
-    private boolean isItemDiscountable(DiscountInterface discount, Item item) {
-        return (doesDiscountApplyForItem(discount, item) || doesDiscountApplyForItemType(discount, item)) && applyDiscountIfDateApply(discount);
+    private boolean canItemBeDiscounted(DiscountInterface discount, Item item) {
+        return (doesDiscountApplyForItem(discount, item) ||
+                doesDiscountApplyForItemType(discount, item)) && applyDiscountIfDateApply(discount);
     }
 
     private boolean doesDiscountApplyForItem(DiscountInterface discount, Item item){
-        if(discount.getItem() != null)
-            return item.equals(discount.getItem());
-
-        return false;
+        return discount.getItem() != null && item.equals(discount.getItem());
     }
 
     private boolean doesDiscountApplyForItemType(DiscountInterface discount, Item item){
-        if(discount.getItemType() != null)
-            return item.getItemType().equals(discount.getItemType());
-
-        return false;
+        return discount.getItemType() != null && item.getItemType().equals(discount.getItemType());
     }
 
     private boolean applyDiscountIfDateApply(DiscountInterface discount){
-        if (discount.getDiscountDate() != null)
-            return discount.getDiscountDate().equals(LocalDate.now());
-
+        if(discount.getDiscountDate() != null)
+            return  discount.getDiscountDate().equals(LocalDate.now());
         return true;
     }
 
@@ -112,9 +102,7 @@ public class Cart {
     }
 
     private boolean isSpecificDayDiscount(DiscountInterface discount) {
-        if(discount.getDiscountDate() != null)
-            return discount.getDiscountDate().equals(LocalDate.now());
-        return false;
+        return discount.getDiscountDate() != null && discount.getDiscountDate().equals(LocalDate.now());
     }
 
     private boolean isAmountOfItemsInCartDiscount(DiscountInterface discount){
@@ -122,20 +110,16 @@ public class Cart {
     }
 
     private boolean isAmountOfSpecificItemsInCartDiscount(DiscountInterface discount) {
-        if(discount.getItem() != null)
-            return Collections.frequency(this.itemList, discount.getItem()) >= discount.getDiscountItemLimit();
-        return false;
+        return discount.getItem() != null && Collections.frequency(this.itemList, discount.getItem()) >= discount
+                .getDiscountItemLimit();
     }
 
     private boolean isAmountOfSpecificItemTypeInCartDiscount(DiscountInterface discount) {
-        if(discount.getItemType() != null)
-            return itemList.stream().filter(item -> discount.getItemType().equals(item.getItemType())).count() >= discount
-                    .getDiscountItemLimit();
-        return false;
-    }
+        return discount.getItemType() != null && itemList.stream().filter(item -> discount.getItemType().equals(item.getItemType())).count() >= discount.getDiscountItemLimit();
+}
 
     private void getTotalPriceOfItems() {
         for(Item item : itemList)
-            this.amountBeforeDiscount += item.getItemPrice();
+            this.amountBeforeDiscount += item.getItemPriceBeforeDiscount();
     }
 }
