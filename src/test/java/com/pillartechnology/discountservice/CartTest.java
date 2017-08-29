@@ -22,17 +22,57 @@ public class CartTest {
         items.add(electronicItem);
         items.add(clothingItem);
         items.add(bookItem);
+
+        cart = new Cart(items);
     }
 
     @Test
     public void getPriceFromCartWhenItemsAreAdded(){
-        cart = new Cart(items);
         assertEquals(30.0d, cart.getAmountBeforeDiscount(), 2);
     }
 
     @Test
+    public void getPriceOfCartWhenCartIsDiscountedByADollarAmountForTheDay(){
+        discount = new AllCartDiscount(DiscountType.Dollar, 20d, LocalDate.now());
+
+        cart.applyDiscount(discount);
+        assertEquals(10.0d, cart.getAmountAfterDiscount(), 2);
+    }
+
+    @Test
+    public void getPriceFromCartWhenCartIsDiscountedTheDay(){
+        discount = new AllCartDiscount(DiscountType.Percentage, .20d, LocalDate.now());
+
+        cart.applyDiscount(discount);
+        assertEquals(24.0d, cart.getAmountAfterDiscount(), 2);
+    }
+
+    @Test
+    public void getPriceFromCartWhenCartIsDiscountedTotalAmountOfItemsInCart(){
+        discount = new AllCartDiscount(DiscountType.Percentage, .20d, 2);
+
+        cart.applyDiscount(discount);
+        assertEquals(24.0d, cart.getAmountAfterDiscount(), 2);
+    }
+
+    @Test
+    public void getPriceFromCartWhenCartIsDiscountedCertainAmountOfOneParticularItemInCart(){
+        discount = new AllCartDiscount(DiscountType.Percentage, .20d, 1, bookItem);
+
+        cart.applyDiscount(discount);
+        assertEquals(24.0d, cart.getAmountAfterDiscount(), 2);
+    }
+
+    @Test
+    public void getPriceFromCartWhenCartIsDiscountedCertainAmountOfOneParticularItemTypeInCart(){
+        discount = new AllCartDiscount(DiscountType.Percentage, .20d, 1, ItemType.Book);
+
+        cart.applyDiscount(discount);
+        assertEquals(24.0d, cart.getAmountAfterDiscount(), 2);
+    }
+
+    @Test
     public void getPriceOfCartWhenSpecialDiscountIsAppliedForAnItem() {
-        cart = new Cart(items);
         discount = new SingleItemDiscount(DiscountType.Percentage, .25d, bookItem);
 
         cart.applyDiscount(discount);
@@ -41,7 +81,6 @@ public class CartTest {
 
     @Test
     public void getPriceOfCartWhenSpecialDollarDiscountIsAppliedForAnItem() {
-        cart = new Cart(items);
         discount = new SingleItemDiscount(DiscountType.Dollar, 5, bookItem);
 
         cart.applyDiscount(discount);
@@ -50,7 +89,6 @@ public class CartTest {
 
     @Test
     public void getPriceOfCartWhenSpecialDiscountIsAppliedToSpecificTypeOfItem() {
-        cart = new Cart(items);
         discount = new SingleItemDiscount(DiscountType.Percentage, .25d, ItemType.Book);
 
         cart.applyDiscount(discount);
@@ -59,7 +97,6 @@ public class CartTest {
 
     @Test
     public void getPriceOfCartWhenSpecialDiscountIsAppliedToSpecificItemForTheDay() {
-        cart = new Cart(items);
         discount = new SingleItemDiscount(DiscountType.Percentage, .25d,  LocalDate.now(), bookItem);
 
         cart.applyDiscount(discount);
@@ -68,7 +105,6 @@ public class CartTest {
 
     @Test
     public void getPriceOfCartWhenSpecialDiscountIsAppliedToSpecificItemTypeForTheDay() {
-        cart = new Cart(items);
         discount = new SingleItemDiscount(DiscountType.Percentage, .25d,  LocalDate.now(), ItemType.Book);
 
         cart.applyDiscount(discount);
