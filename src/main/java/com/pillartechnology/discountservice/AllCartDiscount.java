@@ -49,8 +49,19 @@ public class AllCartDiscount implements Discount {
         return this.discountAmount;
     }
 
-    public boolean isValid(Items items, Integer itemsCount) {
-        return isSpecificDayDiscount() || isAmountOfItemsInCartDiscount(itemsCount) ||  isAmountOfSpecificItemsInCartDiscount(items) || isAmountOfSpecificItemTypeInCartDiscount(items);
+    @Override
+    public Item getItem() {
+        return item;
+    }
+
+    @Override
+    public ItemType getItemType() {
+        return itemType;
+    }
+
+    @Override
+    public boolean validate(Items items) {
+        return isSpecificDayDiscount() || isAmountOfItemsInCartDiscount(items.size()) ||  isAmountOfSpecificItemsInCartDiscount(items) || isAmountOfSpecificItemTypeInCartDiscount(items);
     }
 
     private boolean isSpecificDayDiscount() {

@@ -1,6 +1,7 @@
 package com.pillartechnology.discountservice;
 
 import java.time.LocalDate;
+import java.util.Collections;
 
 public class SingleItemDiscount implements Discount {
 
@@ -9,6 +10,7 @@ public class SingleItemDiscount implements Discount {
     private LocalDate discountDate;
     private Item item;
     private ItemType itemType;
+    private Integer MINIMUM_ITEM_LIMIT = 1;
 
     public SingleItemDiscount(DiscountType discountType, double discountAmount, Item item) {
         this.discountType = discountType;
@@ -29,6 +31,13 @@ public class SingleItemDiscount implements Discount {
         this.item = item;
     }
 
+    public SingleItemDiscount(DiscountType discountType, Double discountAmount, LocalDate discountDate, ItemType itemType) {
+        this.discountType = discountType;
+        this.discountAmount = discountAmount;
+        this.discountDate = discountDate;
+        this.itemType = itemType;
+    }
+
     @Override
     public DiscountType getDiscountType() {
         return this.discountType;
@@ -39,16 +48,29 @@ public class SingleItemDiscount implements Discount {
         return this.discountAmount;
     }
 
-    public boolean isValid(Item item) {
-        return (isItemDiscountableBaseOnItem(item) || isItemDiscountableBaseOnItemType(item)) && doesDateApply();
+    @Override
+    public Item getItem() {
+        return item;
     }
 
-    private boolean isItemDiscountableBaseOnItem(Item item){
-        return this.item != null && item.equals(this.item);
+    @Override
+    public ItemType getItemType() {
+        return itemType;
     }
 
-    private boolean isItemDiscountableBaseOnItemType(Item item){
-        return this.itemType != null && item.getItemType().equals(this.itemType);
+    @Override
+    public boolean validate(Items items) {
+        return (isAmountOfSpecificItemsInCartDiscount(items) || isAmountOfSpecificItemTypeInCartDiscount(items)) &&
+                doesDateApply();
+    }
+
+    private boolean isAmountOfSpecificItemsInCartDiscount(Items items) {
+        return this.item != null && Collections.frequency(items, this.item) >= MINIMUM_ITEM_LIMIT;
+    }
+
+    private boolean isAmountOfSpecificItemTypeInCartDiscount(Items items) {
+        return this.itemType != null && items.stream().filter(item -> this.itemType.equals(item.getItemType())).count
+                () >= MINIMUM_ITEM_LIMIT;
     }
 
     private boolean doesDateApply(){
