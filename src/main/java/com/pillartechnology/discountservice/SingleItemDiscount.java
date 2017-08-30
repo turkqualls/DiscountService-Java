@@ -10,7 +10,7 @@ public class SingleItemDiscount implements Discount {
     private LocalDate discountDate;
     private Item item;
     private ItemType itemType;
-    private Integer MINIMUM_ITEM_LIMIT = 1;
+    private final Integer MINIMUM_ITEM_LIMIT = 1;
 
     public SingleItemDiscount(DiscountType discountType, double discountAmount, Item item) {
         this.discountType = discountType;

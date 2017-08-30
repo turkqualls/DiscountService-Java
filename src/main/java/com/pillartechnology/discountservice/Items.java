@@ -19,11 +19,9 @@ class Items extends ArrayList<Item> {
     }
 
     void applyDiscountToItems(Discount discount){
-        if(discount.validate(this)){
-            for(Item item : this){
-                if(item.validateDiscount(discount)){
-                    item.applyDiscountToItem(discount);
-                }
+        for(Item item : this){
+            if(item.validateDiscount(discount)){
+                item.applyDiscountToItem(discount);
             }
         }
     }
