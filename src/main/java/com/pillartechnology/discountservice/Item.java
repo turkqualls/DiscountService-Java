@@ -1,35 +1,35 @@
 package com.pillartechnology.discountservice;
 
-public class Item {
-    private String name;
+class Item {
+    private final String name;
     private ItemType itemType;
     private Double itemPriceBeforeDiscount = Double.MIN_VALUE;
     private Double itemPriceAfterDiscount = Double.MIN_VALUE;
 
-    public Item(String name, ItemType itemType, Double itemPrice) {
+    Item(String name, ItemType itemType, Double itemPrice) {
         this.name = name;
         this.itemType = itemType;
         this.itemPriceBeforeDiscount = itemPrice;
     }
 
-    public ItemType getItemType() {
+    ItemType getItemType() {
         return itemType;
     }
 
-    public Double getItemPriceBeforeDiscount() {
+    Double getItemPriceBeforeDiscount() {
         return itemPriceBeforeDiscount;
     }
 
-    public Double getItemPrice() {
+    Double getItemPrice() {
         return this.itemPriceAfterDiscount > Double.MIN_VALUE ? this.itemPriceAfterDiscount : this.itemPriceBeforeDiscount;
     }
 
-    public void applyDiscountToItem(Discount discount){
+    void applyDiscountToItem(Discount discount){
         this.itemPriceAfterDiscount = CalculateDiscountHelper.calculateDiscount(discount.getDiscountType(), this
                 .itemPriceBeforeDiscount, discount.getDiscountAmount());
     }
 
-    public boolean validateDiscount(Discount discount) {
+    boolean validateDiscount(Discount discount) {
         return isItemValid(discount.getItem()) || isItemTypeValid(discount.getItemType());
     }
 

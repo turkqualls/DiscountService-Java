@@ -29,7 +29,7 @@ public class CartTest {
 
     @Test
     public void getPriceFromCartWhenItemsAreAdded(){
-        assertEquals(30.0d, cart.getAmountBeforeDiscount(), 2);
+        assertEquals(30.0d, cart.getAmountBeforeDiscount(), 0);
     }
 
     @Test
@@ -37,7 +37,7 @@ public class CartTest {
         discount = new AllCartDiscount(DiscountType.Dollar, 20d, LocalDate.now());
 
         cart.applyDiscount(discount);
-        assertEquals(10.0d, cart.getAmountAfterDiscount(), 2);
+        assertEquals(10.0d, cart.getAmountAfterDiscount(), 0);
     }
 
     @Test
@@ -45,7 +45,7 @@ public class CartTest {
         discount = new AllCartDiscount(DiscountType.Percentage, .20d, LocalDate.now());
 
         cart.applyDiscount(discount);
-        assertEquals(24.0d, cart.getAmountAfterDiscount(), 2);
+        assertEquals(24.0d, cart.getAmountAfterDiscount(), 0);
     }
 
     @Test
@@ -53,7 +53,7 @@ public class CartTest {
         discount = new AllCartDiscount(DiscountType.Percentage, .20d, 2);
 
         cart.applyDiscount(discount);
-        assertEquals(24.0d, cart.getAmountAfterDiscount(), 2);
+        assertEquals(24.0d, cart.getAmountAfterDiscount(), 0);
     }
 
     @Test
@@ -61,7 +61,7 @@ public class CartTest {
         discount = new AllCartDiscount(DiscountType.Percentage, .20d, 1, bookItem);
 
         cart.applyDiscount(discount);
-        assertEquals(24.0d, cart.getAmountAfterDiscount(), 2);
+        assertEquals(24.0d, cart.getAmountAfterDiscount(), 0);
     }
 
     @Test
@@ -69,7 +69,7 @@ public class CartTest {
         discount = new AllCartDiscount(DiscountType.Percentage, .20d, 1, ItemType.Book);
 
         cart.applyDiscount(discount);
-        assertEquals(24.0d, cart.getAmountAfterDiscount(), 2);
+        assertEquals(24.0d, cart.getAmountAfterDiscount(), 0);
     }
 
     @Test
@@ -77,7 +77,7 @@ public class CartTest {
         discount = new SingleItemDiscount(DiscountType.Percentage, .25d, bookItem);
 
         cart.applyDiscount(discount);
-        assertEquals(27.5d, cart.getAmountAfterDiscount(), 2);
+        assertEquals(27.5d, cart.getAmountAfterDiscount(), 0);
     }
 
     @Test
@@ -85,7 +85,7 @@ public class CartTest {
         discount = new SingleItemDiscount(DiscountType.Dollar, 5, bookItem);
 
         cart.applyDiscount(discount);
-        assertEquals(25d, cart.getAmountAfterDiscount(), 2);
+        assertEquals(25d, cart.getAmountAfterDiscount(), 0);
     }
 
     @Test
@@ -93,7 +93,7 @@ public class CartTest {
         discount = new SingleItemDiscount(DiscountType.Percentage, .25d, ItemType.Book);
 
         cart.applyDiscount(discount);
-        assertEquals(27.5d, cart.getAmountAfterDiscount(), 2);
+        assertEquals(27.5d, cart.getAmountAfterDiscount(), 0);
     }
 
     @Test
@@ -101,7 +101,7 @@ public class CartTest {
         discount = new SingleItemDiscount(DiscountType.Percentage, .25d,  LocalDate.now(), bookItem);
 
         cart.applyDiscount(discount);
-        assertEquals(27.5d, cart.getAmountAfterDiscount(), 2);
+        assertEquals(27.5d, cart.getAmountAfterDiscount(), 0);
     }
 
     @Test
@@ -109,6 +109,6 @@ public class CartTest {
         discount = new SingleItemDiscount(DiscountType.Percentage, .25d,  LocalDate.now(), ItemType.Book);
 
         cart.applyDiscount(discount);
-        assertEquals(27.5d, cart.getAmountAfterDiscount(), 2);
+        assertEquals(27.5d, cart.getAmountAfterDiscount(), 0);
     }
 }
