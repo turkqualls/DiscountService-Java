@@ -4,6 +4,7 @@ public class Cart {
 
     private Double amountBeforeDiscount = Double.MIN_VALUE;
     private Double amountAfterDiscount = Double.MIN_VALUE;
+
     private Items items;
 
     public Cart(Items items) {

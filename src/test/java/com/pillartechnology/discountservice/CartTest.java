@@ -11,6 +11,7 @@ public class CartTest {
     private Cart cart;
     private Discount discount;
     private Items items;
+
     private Item electronicItem = new Item("Electric", ItemType.Electronic, 10.0d);
     private Item clothingItem = new Item("Clothes", ItemType.Clothing, 10.0d);
     private Item bookItem = new Item("Book", ItemType.Book, 10.0d);
