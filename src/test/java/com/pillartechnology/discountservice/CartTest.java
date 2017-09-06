@@ -82,7 +82,7 @@ public class CartTest {
 
     @Test
     public void getPriceOfCartWhenSpecialDollarDiscountIsAppliedForAnItem() {
-        discount = new SingleItemDiscount(DiscountType.Dollar, 5, bookItem);
+        discount = new SingleItemDiscount(DiscountType.Dollar, 5d, bookItem);
 
         cart.applyDiscount(discount);
         assertEquals(25d, cart.getAmountAfterDiscount(), 0);
@@ -98,7 +98,7 @@ public class CartTest {
 
     @Test
     public void getPriceOfCartWhenSpecialDiscountIsAppliedToSpecificItemForTheDay() {
-        discount = new SingleItemDiscount(DiscountType.Percentage, .25d,  LocalDate.now(), bookItem);
+        discount = new SingleItemDiscount(DiscountType.Percentage, .25d, bookItem, LocalDate.now());
 
         cart.applyDiscount(discount);
         assertEquals(27.5d, cart.getAmountAfterDiscount(), 0);
@@ -106,7 +106,7 @@ public class CartTest {
 
     @Test
     public void getPriceOfCartWhenSpecialDiscountIsAppliedToSpecificItemTypeForTheDay() {
-        discount = new SingleItemDiscount(DiscountType.Percentage, .25d,  LocalDate.now(), ItemType.Book);
+        discount = new SingleItemDiscount(DiscountType.Percentage, .25d, ItemType.Book, LocalDate.now());
 
         cart.applyDiscount(discount);
         assertEquals(27.5d, cart.getAmountAfterDiscount(), 0);

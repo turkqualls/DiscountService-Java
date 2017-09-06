@@ -12,26 +12,26 @@ public class SingleItemDiscount implements Discount {
     private ItemType itemType;
     private final Integer MINIMUM_ITEM_LIMIT = 1;
 
-    public SingleItemDiscount(DiscountType discountType, double discountAmount, Item item) {
+    public SingleItemDiscount(DiscountType discountType, Double discountAmount, Item item) {
         this.discountType = discountType;
         this.discountAmount = discountAmount;
         this.item = item;
     }
 
-    public SingleItemDiscount(DiscountType discountType, double discountAmount, ItemType itemType) {
+    public SingleItemDiscount(DiscountType discountType, Double discountAmount, ItemType itemType) {
         this.discountType = discountType;
         this.discountAmount = discountAmount;
         this.itemType = itemType;
     }
 
-    public SingleItemDiscount(DiscountType discountType, double discountAmount, LocalDate discountDate, Item item) {
+    public SingleItemDiscount(DiscountType discountType, Double discountAmount, Item item, LocalDate discountDate) {
         this.discountType = discountType;
         this.discountAmount = discountAmount;
         this.discountDate = discountDate;
         this.item = item;
     }
 
-    public SingleItemDiscount(DiscountType discountType, Double discountAmount, LocalDate discountDate, ItemType itemType) {
+    public SingleItemDiscount(DiscountType discountType, Double discountAmount, ItemType itemType, LocalDate discountDate) {
         this.discountType = discountType;
         this.discountAmount = discountAmount;
         this.discountDate = discountDate;
