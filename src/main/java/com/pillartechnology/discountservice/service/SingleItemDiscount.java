@@ -1,4 +1,4 @@
-package com.pillartechnology.discountservice;
+package com.pillartechnology.discountservice.service;
 
 import com.pillartechnology.discountservice.domain.DiscountType;
 import com.pillartechnology.discountservice.domain.ItemType;
@@ -6,39 +6,38 @@ import com.pillartechnology.discountservice.domain.ItemType;
 import java.time.LocalDate;
 import java.util.Collections;
 
-public class AllCartDiscount implements Discount {
+public class SingleItemDiscount implements Discount {
 
     private DiscountType discountType;
     private Double discountAmount;
     private LocalDate discountDate;
-    private Integer itemLimit;
     private Item item;
     private ItemType itemType;
+    private final Integer MINIMUM_ITEM_LIMIT = 1;
 
-
-    public AllCartDiscount(DiscountType discountType, double discountAmount, LocalDate discountDate) {
+    public SingleItemDiscount(DiscountType discountType, Double discountAmount, Item item) {
         this.discountType = discountType;
         this.discountAmount = discountAmount;
-        this.discountDate = discountDate;
-    }
-
-    public AllCartDiscount(DiscountType discountType, double discountAmount, int itemLimit) {
-        this.discountType = discountType;
-        this.discountAmount = discountAmount;
-        this.itemLimit = itemLimit;
-    }
-
-    public AllCartDiscount(DiscountType discountType, double discountAmount, int itemLimit, Item item) {
-        this.discountType = discountType;
-        this.discountAmount = discountAmount;
-        this.itemLimit = itemLimit;
         this.item = item;
     }
 
-    public AllCartDiscount(DiscountType discountType, double discountAmount, int itemLimit, ItemType itemType) {
+    public SingleItemDiscount(DiscountType discountType, Double discountAmount, ItemType itemType) {
         this.discountType = discountType;
         this.discountAmount = discountAmount;
-        this.itemLimit = itemLimit;
+        this.itemType = itemType;
+    }
+
+    public SingleItemDiscount(DiscountType discountType, Double discountAmount, Item item, LocalDate discountDate) {
+        this.discountType = discountType;
+        this.discountAmount = discountAmount;
+        this.discountDate = discountDate;
+        this.item = item;
+    }
+
+    public SingleItemDiscount(DiscountType discountType, Double discountAmount, ItemType itemType, LocalDate discountDate) {
+        this.discountType = discountType;
+        this.discountAmount = discountAmount;
+        this.discountDate = discountDate;
         this.itemType = itemType;
     }
 
@@ -63,7 +62,8 @@ public class AllCartDiscount implements Discount {
     }
 
     public boolean validate(Items items) {
-        return isSpecificDayDiscount() || isAmountOfItemsInCartDiscount(items.size()) ||  isAmountOfSpecificItemsInCartDiscount(items) || isAmountOfSpecificItemTypeInCartDiscount(items);
+        return (isAmountOfSpecificItemsInCartDiscount(items) || isAmountOfSpecificItemTypeInCartDiscount(items)) &&
+                doesDateApply();
     }
 
     @Override
@@ -71,19 +71,16 @@ public class AllCartDiscount implements Discount {
         return null;
     }
 
-    private boolean isSpecificDayDiscount() {
-        return this.discountDate != null && this.discountDate.equals(LocalDate.now());
-    }
-
-    private boolean isAmountOfItemsInCartDiscount(Integer itemsInCart){
-        return itemsInCart >= this.itemLimit;
-    }
-
     private boolean isAmountOfSpecificItemsInCartDiscount(Items items) {
-        return this.item != null && Collections.frequency(items, this.item) >= this.itemLimit;
+        return this.item != null && Collections.frequency(items, this.item) >= MINIMUM_ITEM_LIMIT;
     }
 
     private boolean isAmountOfSpecificItemTypeInCartDiscount(Items items) {
-        return this.itemType != null && items.stream().filter(item -> this.itemType.equals(item.getItemType())).count() >= this.itemLimit;
+        return this.itemType != null && items.stream().filter(item -> this.itemType.equals(item.getItemType())).count
+                () >= MINIMUM_ITEM_LIMIT;
+    }
+
+    private boolean doesDateApply(){
+        return  this.discountDate == null || this.discountDate.equals(LocalDate.now());
     }
 }

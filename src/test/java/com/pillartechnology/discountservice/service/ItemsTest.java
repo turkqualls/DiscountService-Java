@@ -1,7 +1,10 @@
-package com.pillartechnology.discountservice;
+package com.pillartechnology.discountservice.service;
 
 import com.pillartechnology.discountservice.domain.DiscountType;
 import com.pillartechnology.discountservice.domain.ItemType;
+import com.pillartechnology.discountservice.service.Item;
+import com.pillartechnology.discountservice.service.Items;
+import com.pillartechnology.discountservice.service.SingleItemDiscount;
 import org.junit.Before;
 import org.junit.Test;
 

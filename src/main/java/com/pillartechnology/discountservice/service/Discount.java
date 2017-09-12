@@ -1,4 +1,4 @@
-package com.pillartechnology.discountservice;
+package com.pillartechnology.discountservice.service;
 
 import com.pillartechnology.discountservice.domain.DiscountType;
 import com.pillartechnology.discountservice.domain.ItemType;

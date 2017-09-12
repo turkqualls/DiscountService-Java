@@ -1,24 +1,24 @@
-package com.pillartechnology.discountservice;
+package com.pillartechnology.discountservice.service;
 
 import java.util.ArrayList;
 
-class Items extends ArrayList<Item> {
+public class Items extends ArrayList<Item> {
 
-    Double getTotalPriceOfItemsBeforeDiscount(){
+    public Double getTotalPriceOfItemsBeforeDiscount(){
         Double total = 0.0d;
         for(Item item : this)
             total += item.getItemPriceBeforeDiscount();
         return total;
     }
 
-    Double getTotalPriceOfItemsAfterDiscount(){
+    public Double getTotalPriceOfItemsAfterDiscount(){
         Double total = 0.0d;
         for(Item item : this)
             total += item.getItemPrice();
         return total;
     }
 
-    void applyDiscountToItems(Discount discount){
+    public void applyDiscountToItems(Discount discount){
         for(Item item : this){
             if(item.validateDiscount(discount)){
                 item.applyDiscountToItem(discount);

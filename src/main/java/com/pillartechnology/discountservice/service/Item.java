@@ -1,15 +1,15 @@
-package com.pillartechnology.discountservice;
+package com.pillartechnology.discountservice.service;
 
 import com.pillartechnology.discountservice.domain.ItemType;
 import com.pillartechnology.discountservice.util.CalculateDiscountHelper;
 
-class Item {
+public class Item {
     private final String name;
     private final ItemType itemType;
     private final Double itemPriceBeforeDiscount;
     private Double itemPriceAfterDiscount = Double.MIN_VALUE;
 
-    Item(String name, ItemType itemType, Double itemPrice) {
+    public Item(String name, ItemType itemType, Double itemPrice) {
         this.name = name;
         this.itemType = itemType;
         this.itemPriceBeforeDiscount = itemPrice;
@@ -27,16 +27,16 @@ class Item {
         return itemPriceAfterDiscount;
     }
 
-    Double getItemPrice() {
+    public Double getItemPrice() {
         return this.itemPriceAfterDiscount > Double.MIN_VALUE ? this.itemPriceAfterDiscount : this.itemPriceBeforeDiscount;
     }
 
-    void applyDiscountToItem(Discount discount){
+    public void applyDiscountToItem(Discount discount){
         this.itemPriceAfterDiscount = CalculateDiscountHelper.calculateDiscount(discount.getDiscountType(), this
                 .itemPriceBeforeDiscount, discount.getDiscountAmount());
     }
 
-    boolean validateDiscount(Discount discount) {
+    public boolean validateDiscount(Discount discount) {
         return isItemValid(discount.getItem()) || isItemTypeValid(discount.getItemType());
     }
 
