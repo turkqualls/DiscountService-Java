@@ -1,122 +1,66 @@
 package com.pillartechnology.discountservice.service;
 
-import com.pillartechnology.discountservice.domain.DiscountType;
-import com.pillartechnology.discountservice.domain.ItemType;
-import com.pillartechnology.discountservice.service.AllCartDiscount;
-import com.pillartechnology.discountservice.service.Cart;
-import com.pillartechnology.discountservice.service.Discount;
-import com.pillartechnology.discountservice.service.Item;
-import com.pillartechnology.discountservice.service.Items;
-import com.pillartechnology.discountservice.service.SingleItemDiscount;
-import org.junit.*;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
-import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
 
-import static org.junit.Assert.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
+import static org.mockito.Mockito.*;
 
+@RunWith(MockitoJUnitRunner.class)
 public class CartTest {
+    private Cart cart;
 
-    /*private Cart cart;
-    private Discount discount;
-    private Items items;
+    @Mock
+    private Item item;
 
-    private Item electronicItem = new Item("Electric", ItemType.Electronic, 10.0d);
-    private Item clothingItem = new Item("Clothes", ItemType.Clothing, 10.0d);
-    private Item bookItem = new Item("Book", ItemType.Book, 10.0d);
+    private static final double ERROR = 0.0000001;
 
     @Before
-    public void setup(){
-        items = new Items();
-
-        items.add(electronicItem);
-        items.add(clothingItem);
-        items.add(bookItem);
-
-        cart = new Cart(items);
+    public void setUp() throws Exception {
+        cart = new Cart();
     }
 
     @Test
-    public void getPriceFromCartWhenItemsAreAdded(){
-        assertEquals(30.0d, cart.getAmountBeforeDiscount(), 0);
+    public void shouldAddItemToCart() throws Exception {
+        cart.addItem(item);
+
+        assertThat(cart.getNumberOfItemsInCart(), is(1));
     }
 
     @Test
-    public void getPriceOfCartWhenCartIsDiscountedByADollarAmountForTheDay(){
-        discount = new AllCartDiscount(DiscountType.Dollar, 20d, LocalDate.now());
+    public void shouldAddMultipleItemsToCart() throws Exception {
+        cart.addItems(new ArrayList<>(Arrays.asList(
+                item,
+                item,
+                item
+        )));
 
-        cart.applyDiscount(discount);
-        assertEquals(10.0d, cart.getAmountAfterDiscount(), 0);
+        assertThat(cart.getNumberOfItemsInCart(), is(3));
+    }
+
+    @Test(expected = NoItemsInCartExcpetion.class)
+    public void shouldReturnNoItemsInCartException() throws Exception {
+        cart.getNumberOfItemsInCart();
     }
 
     @Test
-    public void getPriceFromCartWhenCartIsDiscountedTheDay(){
-        discount = new AllCartDiscount(DiscountType.Percentage, .20d, LocalDate.now());
+    public void shouldReturnTotalAmountOfAllItems() throws Exception {
+        when(item.getItemPrice()).thenReturn(10d, 15d, 5d);
 
-        cart.applyDiscount(discount);
-        assertEquals(24.0d, cart.getAmountAfterDiscount(), 0);
+        cart.addItems(new ArrayList<>(Arrays.asList(
+                item,
+                item,
+                item
+        )));
+
+        assertThat(cart.getTotalInCart(), closeTo(30d, ERROR));
+        verify(item, times(3)).getItemPrice();
     }
-
-    @Test
-    public void getPriceFromCartWhenCartIsDiscountedTotalAmountOfItemsInCart(){
-        discount = new AllCartDiscount(DiscountType.Percentage, .20d, 2);
-
-        cart.applyDiscount(discount);
-        assertEquals(24.0d, cart.getAmountAfterDiscount(), 0);
-    }
-
-    @Test
-    public void getPriceFromCartWhenCartIsDiscountedCertainAmountOfOneParticularItemInCart(){
-        discount = new AllCartDiscount(DiscountType.Percentage, .20d, 1, bookItem);
-
-        cart.applyDiscount(discount);
-        assertEquals(24.0d, cart.getAmountAfterDiscount(), 0);
-    }
-
-    @Test
-    public void getPriceFromCartWhenCartIsDiscountedCertainAmountOfOneParticularItemTypeInCart(){
-        discount = new AllCartDiscount(DiscountType.Percentage, .20d, 1, ItemType.Book);
-
-        cart.applyDiscount(discount);
-        assertEquals(24.0d, cart.getAmountAfterDiscount(), 0);
-    }
-
-    @Test
-    public void getPriceOfCartWhenSpecialDiscountIsAppliedForAnItem() {
-        discount = new SingleItemDiscount(DiscountType.Percentage, .25d, bookItem);
-
-        cart.applyDiscount(discount);
-        assertEquals(27.5d, cart.getAmountAfterDiscount(), 0);
-    }
-
-    @Test
-    public void getPriceOfCartWhenSpecialDollarDiscountIsAppliedForAnItem() {
-        discount = new SingleItemDiscount(DiscountType.Dollar, 5d, bookItem);
-
-        cart.applyDiscount(discount);
-        assertEquals(25d, cart.getAmountAfterDiscount(), 0);
-    }
-
-    @Test
-    public void getPriceOfCartWhenSpecialDiscountIsAppliedToSpecificTypeOfItem() {
-        discount = new SingleItemDiscount(DiscountType.Percentage, .25d, ItemType.Book);
-
-        cart.applyDiscount(discount);
-        assertEquals(27.5d, cart.getAmountAfterDiscount(), 0);
-    }
-
-    @Test
-    public void getPriceOfCartWhenSpecialDiscountIsAppliedToSpecificItemForTheDay() {
-        discount = new SingleItemDiscount(DiscountType.Percentage, .25d, bookItem, LocalDate.now());
-
-        cart.applyDiscount(discount);
-        assertEquals(27.5d, cart.getAmountAfterDiscount(), 0);
-    }
-
-    @Test
-    public void getPriceOfCartWhenSpecialDiscountIsAppliedToSpecificItemTypeForTheDay() {
-        discount = new SingleItemDiscount(DiscountType.Percentage, .25d, ItemType.Book, LocalDate.now());
-
-        cart.applyDiscount(discount);
-        assertEquals(27.5d, cart.getAmountAfterDiscount(), 0);
-    }*/
 }

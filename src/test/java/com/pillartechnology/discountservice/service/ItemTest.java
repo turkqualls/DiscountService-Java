@@ -10,6 +10,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
+import static org.hamcrest.Matchers.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ItemTest {
@@ -25,31 +26,31 @@ public class ItemTest {
 
     @Test
     public void shouldReturnItemPriceBeforeDiscountIsApplied() throws Exception {
-        assertEquals(1.0d, item.getItemPrice(), 0);
-        assertEquals(1.0d, item.getItemPriceBeforeDiscount(), 0);
-        assertEquals(Double.MIN_VALUE, item.getItemPriceAfterDiscount(), 0);
+        assertThat(item.getItemPrice(), is(1.0d));
+        assertThat(item.getItemPriceBeforeDiscount(), is(1.0d));
+        assertThat(item.getItemPriceAfterDiscount(), is(Double.MIN_VALUE));
     }
 
     @Test
-    public void applyDiscountPercentageToItem() throws Exception {
+    public void applyDiscountPercentageToItem_ReturnDiscountedPrice() throws Exception {
         when(discount.getDiscountType()).thenReturn(DiscountType.Percentage);
         when(discount.getDiscountAmount()).thenReturn(.5d);
 
         item.applyDiscountToItem(discount);
 
-        assertEquals(.5d, item.getItemPrice(),0);
+        assertThat(item.getItemPrice(), is(.5d));
         verify(discount).getDiscountType();
         verify(discount).getDiscountAmount();
     }
 
     @Test
-    public void applyDiscountDollarAmountToItem() throws Exception {
+    public void applyDiscountDollarAmountToItemReturnDiscountPrice() throws Exception {
         when(discount.getDiscountType()).thenReturn(DiscountType.Dollar);
         when(discount.getDiscountAmount()).thenReturn(.5d);
 
         item.applyDiscountToItem(discount);
 
-        assertEquals(.5d, item.getItemPrice(),0);
+        assertThat(item.getItemPrice(), is(.5d));
         verify(discount).getDiscountType();
         verify(discount).getDiscountAmount();
     }
