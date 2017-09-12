@@ -9,6 +9,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
@@ -20,6 +22,8 @@ public class CartTest2 {
     @Mock
     private Item item;
 
+    private static final double ERROR = 0.0000001;
+
     @Before
     public void setUp() throws Exception {
         cart = new Cart();
@@ -29,7 +33,7 @@ public class CartTest2 {
     public void shouldAddItemToCart() throws Exception {
         cart.addItem(item);
 
-        assertEquals(1, cart.getNumberOfItemsInCart());
+        assertThat(cart.getNumberOfItemsInCart(), is(1));
     }
 
     @Test
@@ -40,7 +44,7 @@ public class CartTest2 {
                 item
         )));
 
-        assertEquals(3, cart.getNumberOfItemsInCart());
+        assertThat(cart.getNumberOfItemsInCart(), is(3));
     }
 
     @Test(expected = NoItemsInCartExcpetion.class)
@@ -58,7 +62,7 @@ public class CartTest2 {
                 item
         )));
 
-        assertEquals(30d, cart.getTotalInCart(), 0);
+        assertThat(cart.getTotalInCart(), closeTo(30d, ERROR));
         verify(item, times(3)).getItemPrice();
     }
 }
