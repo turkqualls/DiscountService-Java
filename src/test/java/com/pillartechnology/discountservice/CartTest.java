@@ -1,5 +1,7 @@
 package com.pillartechnology.discountservice;
 
+import com.pillartechnology.discountservice.domain.DiscountType;
+import com.pillartechnology.discountservice.domain.ItemType;
 import org.junit.*;
 
 import java.time.LocalDate;

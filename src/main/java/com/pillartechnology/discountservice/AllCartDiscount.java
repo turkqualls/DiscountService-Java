@@ -1,5 +1,8 @@
 package com.pillartechnology.discountservice;
 
+import com.pillartechnology.discountservice.domain.DiscountType;
+import com.pillartechnology.discountservice.domain.ItemType;
+
 import java.time.LocalDate;
 import java.util.Collections;
 
@@ -59,9 +62,13 @@ public class AllCartDiscount implements Discount {
         return itemType;
     }
 
-    @Override
     public boolean validate(Items items) {
         return isSpecificDayDiscount() || isAmountOfItemsInCartDiscount(items.size()) ||  isAmountOfSpecificItemsInCartDiscount(items) || isAmountOfSpecificItemTypeInCartDiscount(items);
+    }
+
+    @Override
+    public LocalDate getDiscountDate() {
+        return null;
     }
 
     private boolean isSpecificDayDiscount() {

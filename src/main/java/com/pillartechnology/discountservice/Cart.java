@@ -1,5 +1,7 @@
 package com.pillartechnology.discountservice;
 
+import com.pillartechnology.discountservice.util.CalculateDiscountHelper;
+
 class Cart {
 
     private Double amountBeforeDiscount = Double.MIN_VALUE;
@@ -28,6 +30,10 @@ class Cart {
     }
 
     private boolean isDiscountForCart(Discount discount){
-        return discount instanceof AllCartDiscount && discount.validate(this.items);
+        return discount instanceof AllCartDiscount && isValidForAllCartDiscount((AllCartDiscount) discount);
+    }
+
+    private boolean isValidForAllCartDiscount(AllCartDiscount discount){
+        return discount.validate(this.items);
     }
 }
