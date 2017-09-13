@@ -1,9 +1,9 @@
 package com.pillartechnology.discountservice.service;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.cglib.core.Local;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.time.LocalDate;
@@ -12,8 +12,7 @@ import java.util.Arrays;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -63,17 +62,11 @@ public class CartTest {
     }
 
     @Test
-    public void shouldValidateDiscountForAllCartForDate() throws Exception {
-        cart.addItems(new ArrayList<>(Arrays.asList(
-                item,
-                item,
-                item
-        )));
+    public void shouldValidateDiscountBaseOnDate() throws Exception {
+        discount = mock(Discount.class);
 
-        when(item.getItemPrice()).thenReturn(10d, 15d, 5d);
+        when(discount.getDiscountDate()).thenReturn(LocalDate.now());
 
-//        assertThat(cart.getTotalInCart(), closeTo(15d, 0d));
-        assertEquals(15d, cart.getTotalInCart(), 0d);
-        verify(item, times(3)).getItemPrice();
+        assertTrue(cart.isDiscountValid(discount));
     }
 }

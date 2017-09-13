@@ -1,5 +1,6 @@
 package com.pillartechnology.discountservice.service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +27,7 @@ public class Cart {
         return items.stream().mapToDouble(Item::getItemPrice).sum();
     }
 
-    public void applyDiscount(Discount discount) {
-
+    public boolean isDiscountValid(Discount discount) {
+        return discount.getDiscountDate().equals(LocalDate.now());
     }
 }
