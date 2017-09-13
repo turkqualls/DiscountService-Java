@@ -11,4 +11,5 @@ public interface Discount {
     Item getItem();
     ItemType getItemType();
     LocalDate getDiscountDate();
+    Integer getDiscountItemLimit();
 }

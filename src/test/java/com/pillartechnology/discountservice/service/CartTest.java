@@ -69,4 +69,24 @@ public class CartTest {
 
         assertTrue(cart.isDiscountValid(discount));
     }
+
+    @Test
+    public void shouldValidateDiscountBaseOnNumberOfItemsInCart() throws Exception {
+        cart.addItem(item);
+        discount = mock(Discount.class);
+
+        when(discount.getDiscountItemLimit()).thenReturn(1);
+
+        assertTrue(cart.isDiscountValid(discount));
+    }
+
+    @Test
+    public void shouldValidateDiscountBaseOnItemInCart() throws Exception {
+        cart.addItem(item);
+        discount = mock(Discount.class);
+
+        when(discount.getItem()).thenReturn(item);
+
+        assertTrue(cart.isDiscountValid(discount));
+    }
 }

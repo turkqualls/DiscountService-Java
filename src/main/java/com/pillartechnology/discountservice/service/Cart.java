@@ -1,7 +1,10 @@
 package com.pillartechnology.discountservice.service;
 
+import com.sun.istack.internal.NotNull;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Cart {
@@ -27,7 +30,22 @@ public class Cart {
         return items.stream().mapToDouble(Item::getItemPrice).sum();
     }
 
-    public boolean isDiscountValid(Discount discount) {
-        return discount.getDiscountDate().equals(LocalDate.now());
+    public boolean isDiscountValid(Discount discount) throws Exception {
+        return isDiscountableByAmountOfItem(discount) || isDiscountableByItemLimit(discount) || isDiscountableByDate
+                (discount);
+    }
+
+    @NotNull
+    private boolean isDiscountableByItemLimit(Discount discount) {
+        return discount.getDiscountItemLimit() > 0 && items.size() >= discount.getDiscountItemLimit();
+    }
+
+    private boolean isDiscountableByDate(Discount discount) {
+        return LocalDate.now().equals(discount.getDiscountDate());
+    }
+
+    private boolean isDiscountableByAmountOfItem(Discount discount) {
+        System.out.println(discount.getItem());
+        return Collections.frequency(items, discount.getItem()) >= discount.getDiscountItemLimit();
     }
 }

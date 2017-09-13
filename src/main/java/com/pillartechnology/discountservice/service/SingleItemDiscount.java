@@ -71,6 +71,11 @@ public class SingleItemDiscount implements Discount {
         return null;
     }
 
+    @Override
+    public Integer getDiscountItemLimit() {
+        return null;
+    }
+
     private boolean isAmountOfSpecificItemsInCartDiscount(Items items) {
         return this.item != null && Collections.frequency(items, this.item) >= MINIMUM_ITEM_LIMIT;
     }

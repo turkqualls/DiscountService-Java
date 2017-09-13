@@ -71,6 +71,11 @@ public class AllCartDiscount implements Discount {
         return null;
     }
 
+    @Override
+    public Integer getDiscountItemLimit() {
+        return null;
+    }
+
     private boolean isSpecificDayDiscount() {
         return this.discountDate != null && this.discountDate.equals(LocalDate.now());
     }
