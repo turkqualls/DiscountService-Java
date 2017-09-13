@@ -6,21 +6,24 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CartTest {
+
     private Cart cart;
+    private Discount discount;
 
     @Mock
     private Item item;
-
-    private static final double ERROR = 0.0000001;
 
     @Before
     public void setUp() throws Exception {
@@ -45,22 +48,32 @@ public class CartTest {
         assertThat(cart.getNumberOfItemsInCart(), is(3));
     }
 
-    @Test(expected = NoItemsInCartExcpetion.class)
-    public void shouldReturnNoItemsInCartException() throws Exception {
-        cart.getNumberOfItemsInCart();
-    }
-
     @Test
     public void shouldReturnTotalAmountOfAllItems() throws Exception {
-        when(item.getItemPrice()).thenReturn(10d, 15d, 5d);
-
         cart.addItems(new ArrayList<>(Arrays.asList(
                 item,
                 item,
                 item
         )));
 
-        assertThat(cart.getTotalInCart(), closeTo(30d, ERROR));
+        when(item.getItemPrice()).thenReturn(10d, 15d, 5d);
+
+        assertThat(cart.getTotalInCart(), is(30d));
+        verify(item, times(3)).getItemPrice();
+    }
+
+    @Test
+    public void shouldValidateDiscountForAllCartForDate() throws Exception {
+        cart.addItems(new ArrayList<>(Arrays.asList(
+                item,
+                item,
+                item
+        )));
+
+        when(item.getItemPrice()).thenReturn(10d, 15d, 5d);
+
+//        assertThat(cart.getTotalInCart(), closeTo(15d, 0d));
+        assertEquals(15d, cart.getTotalInCart(), 0d);
         verify(item, times(3)).getItemPrice();
     }
 }

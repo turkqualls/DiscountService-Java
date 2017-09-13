@@ -10,9 +10,7 @@ public class Cart {
         this.items = new ArrayList<>();
     }
 
-    public int getNumberOfItemsInCart() throws NoItemsInCartExcpetion {
-        if (items.size() <= 0)
-            throw new NoItemsInCartExcpetion();
+    public int getNumberOfItemsInCart() throws Exception {
         return items.size();
     }
 
@@ -25,9 +23,10 @@ public class Cart {
     }
 
     public double getTotalInCart() throws Exception {
-        double totalPrice = 0;
-        for(Item item : items)
-            totalPrice += item.getItemPrice();
-        return totalPrice;
+        return items.stream().mapToDouble(Item::getItemPrice).sum();
+    }
+
+    public void applyDiscount(Discount discount) {
+
     }
 }
